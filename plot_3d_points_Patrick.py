@@ -12,7 +12,7 @@ import numpy as np
 # FILE = "output_3d_predictions.npy"
 # FILE = "output_3d_keypoints.npy"
 # FILE = "output_3d_after_image_coordinates.npy"
-FILE = "output_3d_after_camera_to_world.npy"
+FILE = r"./temp_output/output_3d_after_camera_to_world.npy"
 
 data = np.load(FILE)
 
