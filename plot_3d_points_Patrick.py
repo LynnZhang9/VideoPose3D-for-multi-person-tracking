@@ -11,10 +11,10 @@ import scipy.optimize
 import functools
 
 # FILE = "output_3d.npy"
-# FILE = "output_3d_predictions.npy"
-# FILE = "output_3d_keypoints.npy"
-# FILE = "output_3d_after_image_coordinates.npy"
-FILE = "output_3d_after_camera_to_world.npy"
+# FILE = r"./temp_output/output_3d_predictions.npy"
+# FILE = r"./temp_output/output_3d_keypoints.npy"
+# FILE = r"./temp_output/output_3d_after_image_coordinates.npy"
+FILE = r"./temp_output/output_3d_after_camera_to_world.npy"
 
 data = np.load(FILE)
 
@@ -71,22 +71,14 @@ def plane_regression(points):
 
     xs, ys, zs = zip(*points)
 
-
-
     point = np.array([0.0, 0.0, c])
     normal = np.array(cross([1,0,a], [0,1,b]))
 
     d = -point.dot(normal)
+    # x yy define the plane area
     xx, yy = np.meshgrid([-4,-2], [-9,-3])
     z = (-normal[0] * xx - normal[1] * yy - d) * 1. / normal[2]
     return xx, yy, z
-
-
-points = [(1.1,2.1,8.1),
-          (3.2,4.2,8.0),
-          (5.3,1.3,8.2),
-          (3.4,2.4,8.3),
-          (1.5,4.5,8.0)]
 
 
 
@@ -98,11 +90,27 @@ def plot_at_frame(fr):
     if len(artists) == 0:
         #Plane regression
         # plane_3d.remove()
-        left_ankle = data[:, fr, 15, :]
-        right_ankle = data[:, fr, 16, :]
-        ankles =np.concatenate((left_ankle, right_ankle), axis=0)
+        # left_ankle = data[:, fr, 15, :]
+        # right_ankle = data[:, fr, 16, :]
+        # ankles =np.concatenate((left_ankle, right_ankle), axis=0)
+        # points = ankles[~np.isnan(ankles).any(axis=1), :]
+
+        # All ankle points
+        ankles_exist = False
+        for fr in range(data.shape[1]):
+            left_ankle = data[:, fr, 15, :]
+            right_ankle = data[:, fr, 16, :]
+            if not ankles_exist:
+                ankles = np.concatenate((left_ankle, right_ankle), axis=0)
+                ankles_exist = True
+            else:
+                fr_ankles = np.concatenate((left_ankle, right_ankle), axis=0)
+                ankles = np.concatenate((ankles, fr_ankles), axis=0)
+
         points = ankles[~np.isnan(ankles).any(axis=1), :]
+
         xx, yy, zz = plane_regression(points)
+
         plane_3d[0] = ax.plot_surface(xx, yy, zz, alpha=0.2, color=[0, 1, 0])
 
         #Keypoint
@@ -121,14 +129,14 @@ def plot_at_frame(fr):
                                            [z[j][mul], z[j_parent][mul]], zdir='z', c=col))
         ax.legend()
     else:
-        #Plane regression
-        plane_3d[0].remove()
-        left_ankle = data[:, fr, 15, :]
-        right_ankle = data[:, fr, 16, :]
-        ankles =np.concatenate((left_ankle, right_ankle), axis=0)
-        points = ankles[~np.isnan(ankles).any(axis=1), :]
-        xx, yy, zz = plane_regression(points)
-        plane_3d[0] = ax.plot_surface(xx, yy, zz, alpha=0.2, color=[0, 1, 0])
+        # #Plane regression
+        # plane_3d[0].remove()
+        # left_ankle = data[:, fr, 15, :]
+        # right_ankle = data[:, fr, 16, :]
+        # ankles =np.concatenate((left_ankle, right_ankle), axis=0)
+        # points = ankles[~np.isnan(ankles).any(axis=1), :]
+        # xx, yy, zz = plane_regression(points)
+        # plane_3d[0] = ax.plot_surface(xx, yy, zz, alpha=0.2, color=[0, 1, 0])
 
         #Keypoint
         for i, artist in enumerate(artists):
