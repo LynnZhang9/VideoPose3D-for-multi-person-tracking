@@ -3,7 +3,7 @@ from matplotlib import animation
 import numpy as np
 import scipy.optimize
 import functools
-
+from matplotlib import cm
 # FILE = "output_3d.npy"
 # FILE = r"./temp_output/output_3d_predictions.npy"
 # FILE = r"./temp_output/output_3d_keypoints.npy"
@@ -112,16 +112,17 @@ if __name__ == '__main__':
         d1 = point2area_distance(point1, point2, point3, point5)
         distance.append(d1)
 
-
     # set up a figure twice as wide as it is tall
     fig = plt.figure(figsize=plt.figaspect(0.5))
 
     # Plot of ankle points distribution
     ax = fig.add_subplot(1, 2, 1, projection='3d')
+    ax.view_init(elev=15., azim=70)  # initialize the view angle
     ax.set_title('Ankle points distribution')
-    ax.scatter(xs, ys, zs)
-
-    ax.plot_surface(xx, yy, zz, alpha=0.2, color=[0,1,0])
+    scat = ax.scatter(xs, ys, zs, c=distance, cmap=cm.coolwarm, linewidth=0, antialiased=False)
+    # Add a color bar which maps values to colors.
+    fig.colorbar(scat, shrink=0.8, aspect=15)
+    ax.plot_surface(xx, yy, zz, alpha=0.2, color=[0, 1, 0])
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')

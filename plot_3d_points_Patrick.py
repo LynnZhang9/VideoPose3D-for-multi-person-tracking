@@ -157,7 +157,7 @@ def plot_at_frame(fr):
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-
+ax.view_init(elev=15., azim=70) # initialize the view angle
 ax.set_xlabel('X')
 ax.set_ylabel('Y')
 ax.set_zlabel('Z')
