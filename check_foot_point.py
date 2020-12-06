@@ -90,53 +90,34 @@ if __name__ == '__main__':
     # All ankle points
     ankles_exist = False
     for fr in range(data.shape[1]):
+
         left_ankle = data[:, fr, 3, :]
         right_ankle = data[:, fr, 6, :]
-        # if not ankles_exist:
-        #     ankles = left_ankle
-        #     ankles_exist = True
-        # else:
-        #     ankles = np.concatenate((ankles, left_ankle), axis=0)
         if not ankles_exist:
-            ankles = np.concatenate((left_ankle, right_ankle), axis=0)
+            left_ankles = left_ankle
+            right_ankles = right_ankle
             ankles_exist = True
         else:
-            fr_ankles = np.concatenate((left_ankle, right_ankle), axis=0)
-            ankles = np.concatenate((ankles, fr_ankles), axis=0)
+            left_ankles = np.concatenate((left_ankles, left_ankle), axis=0)
+            right_ankles = np.concatenate((right_ankles, right_ankle), axis=0)
 
-    points = ankles[~np.isnan(ankles).any(axis=1), :]
 
-    xx, yy, zz, xs, ys, zs = plane_regression(points)
-    point1 = np.array([xx[0][0], yy[0][0], zz[0][0]])
-    point2 = np.array([xx[0][1], yy[0][1], zz[0][1]])
-    point3 = np.array([xx[1][0], yy[1][0], zz[1][0]])
-    point4 = np.array([xx[1][1], yy[1][1], zz[1][1]])
-    distance = []
-    for i in range(points.shape[0]):
-        point5 = points[i]
-        d1 = point2area_distance(point1, point2, point3, point5)
-        distance.append(d1)
+    left_points = left_ankles[~np.isnan(left_ankles).any(axis=1), :]
+    right_points = right_ankles[~np.isnan(right_ankles).any(axis=1), :]
+    lx, ly, lz = left_points.T
+    rx, ry, rz = right_points.T
 
     # set up a figure twice as wide as it is tall
     fig = plt.figure(figsize=plt.figaspect(0.5))
 
-    # Plot of ankle points distribution
-    ax = fig.add_subplot(1, 2, 1, projection='3d')
-    ax.view_init(elev=15., azim=70)  # initialize the view angle
-    ax.set_title('Ankle points distribution')
-    scat = ax.scatter(xs, ys, zs, c=distance, cmap=cm.coolwarm, linewidth=0, antialiased=False)
-    # Add a color bar which maps values to colors.
-    fig.colorbar(scat, shrink=0.8, aspect=15)
-    ax.plot_surface(xx, yy, zz, alpha=0.2, color=[0, 1, 0])
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
-    # ax.set_xlim(-10,10)
-    # ax.set_ylim(-10,10)
-    # ax.set_zlim(  0,10)
-    # Plot histogram of distance between ankle points and plane
+
+    ax = fig.add_subplot(1, 2, 1)
+    ax.set_title('Left ankle points distribution')
+    ax.set(xlabel='Z value', ylabel='Amount of points')
+    plt.hist(lz, bins=50)
+
     ax = fig.add_subplot(1, 2, 2)
-    ax.set_title('Histogram of distance between ankle points and plane')
-    ax.set(xlabel='Distance', ylabel='Amount of points')
-    plt.hist(distance, bins=50)
+    ax.set_title('Right ankle points distribution')
+    ax.set(xlabel='Z value', ylabel='Amount of points')
+    plt.hist(rz, bins=50)
     plt.show()

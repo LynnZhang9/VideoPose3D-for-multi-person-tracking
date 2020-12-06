@@ -98,8 +98,8 @@ def plot_at_frame(fr):
         # All ankle points
         ankles_exist = False
         for fr in range(data.shape[1]):
-            left_ankle = data[:, fr, 15, :]
-            right_ankle = data[:, fr, 16, :]
+            left_ankle = data[:, fr, 3, :]
+            right_ankle = data[:, fr, 6, :]
             if not ankles_exist:
                 ankles = np.concatenate((left_ankle, right_ankle), axis=0)
                 ankles_exist = True
