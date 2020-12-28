@@ -8,6 +8,7 @@ from detectron2.config import get_cfg
 #NN-tracking
 from scipy.optimize import linear_sum_assignment
 import pandas as pd
+from PIL import Image
 
 # SETTINGS =============================================================================================================
 
@@ -375,7 +376,10 @@ def predict_pose(pose_predictor, img_generator, output_path, traj_output_path, d
 				'w': img.shape[1],
 				'h': img.shape[0],
 			}
-
+		# test
+		# test_img = Image.fromarray(img, 'RGB')
+		# test_img.save('input.jpg')
+		# test_img.show()
 		print('{}      '.format(i+1), end='\r')
 
 	# Encode data in VidePose3d format and save it as a compressed numpy (.npz):
@@ -384,7 +388,7 @@ def predict_pose(pose_predictor, img_generator, output_path, traj_output_path, d
 	output[dataset_name] = {}
 	output[dataset_name]['custom'] = [data[0]['keypoints'].astype('float32')]
 
-	# output[dataset_name]['custom_boxes'] = [data[0]['bounding_boxes'].astype('float32')]
+	output[dataset_name]['custom_boxes'] = [data[0]['bounding_boxes'].astype('float32')]
 
 	np.savez_compressed(output_path, positions_2d=output, metadata=metadata)
 
@@ -404,8 +408,10 @@ if __name__ == '__main__':
 	#img_generator = read_video('./video.mp4')  # or get them from a video
 	img_generator = read_video('/home/lin/Videos/GH013110_original_cut_cut.MP4')
 	# output_path = './pose2d_cut_testtt_no_interpolation_27_09'
-	output_path = '/home/lin/workspace/VideoPose3D-for-multi-person-tracking/Detectron_pose_predictor/npz_output/data_2d_custom_myvideos_29_11'
-	traj_output_path = '/home/lin/workspace/VideoPose3D-for-multi-person-tracking/Detectron_pose_predictor/npz_output/dummy_traj_29_11'
+	# output_path = '/home/lin/workspace/VideoPose3D-for-multi-person-tracking/Detectron_pose_predictor/npz_output/data_2d_custom_myvideos_29_11'
+	output_path = '/home/lin/Desktop/workspacedemo/3DMPPE_POSENET_RELEASE/demo/data_mul/data_2d_custom_myvideos_20_12'
+	# traj_output_path = '/home/lin/workspace/VideoPose3D-for-multi-person-tracking/Detectron_pose_predictor/npz_output/dummy_traj_29_11'
+	traj_output_path = '/home/lin/Desktop/workspacedemo/3DMPPE_POSENET_RELEASE/demo/data_mul/dummy_traj_20_12'
 	predict_pose(pose_predictor, img_generator, output_path, traj_output_path)
 
 
