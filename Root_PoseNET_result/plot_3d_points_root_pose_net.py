@@ -91,7 +91,7 @@ def plane_regression(points):
 
     d = -point.dot(normal)
     # x yy define the plane area
-    xx, yy = np.meshgrid([-4,-2], [-9,-3])
+    xx, yy = np.meshgrid([-15000,5000], [0,30000])
     z = (-normal[0] * xx - normal[1] * yy - d) * 1. / normal[2]
     return xx, yy, z
 
@@ -105,6 +105,35 @@ def plot_at_frame(fr):
     kpt_3d_vis = np.ones_like(vis_kps)
     print('keyframes: {}'.format(fr))
     if len(artists) == 0:
+        #Plane regression
+
+        # All ankle points
+        ankles_exist = False
+        for fr in range(len(data)):
+            for i in range(len(data[fr])):
+                # left_ankle = data[:, fr, 3, :]
+                left_ankle = np.array([data[fr][i][10, :]])
+                real_left_ankle = left_ankle.copy()
+                real_left_ankle[0, 1] = left_ankle[0, 2]
+                real_left_ankle[0, 2] = -left_ankle[0, 1]
+                # right_ankle = data[:, fr, 6, :]
+                right_ankle = np.array([data[fr][i][13, :]])
+                real_right_ankle = right_ankle.copy()
+                real_right_ankle[0, 1] = right_ankle[0, 2]
+                real_right_ankle[0, 2] = -right_ankle[0, 1]
+                if not ankles_exist:
+                    ankles = np.concatenate((real_left_ankle, real_right_ankle), axis=0)
+                    ankles_exist = True
+                else:
+                    fr_ankles = np.concatenate((real_left_ankle, real_right_ankle), axis=0)
+                    ankles = np.concatenate((ankles, fr_ankles), axis=0)
+
+        points = ankles[~np.isnan(ankles).any(axis=1), :]
+
+        xx, yy, zz = plane_regression(points)
+
+        plane_3d[0] = ax.plot_surface(xx, yy, zz, alpha=0.2, color=[0, 1, 0])
+
         #Keypoint
         for i in range(len(x)):
                 artists.append(ax.scatter(x[i], z[i], -y[i], label=str(i)))
