@@ -9,7 +9,7 @@ import pandas as pd
 def load_keypoints_boxes_from_npz(path_to_npz, dataset_name='detectron2'):
 	data = np.load(path_to_npz, encoding='latin1', allow_pickle=True)
 	meta = data['metadata'].item()
-	keypoints = data['positions_2d'].item()[dataset_name]['custom_keypoints'][0]
+	keypoints = data['positions_2d'].item()[dataset_name]['custom'][0]
 	boxes = data['positions_2d'].item()[dataset_name]['custom_boxes'][0]
 
 	return keypoints, boxes, meta
@@ -208,7 +208,7 @@ def visualize_keypoints_boxes(img_generator, keypoints, boxes, trajectories, mp4
 		else:
 			img = draw_body_joints_2d(img, frame_joint2d, bones=body_edges_17, draw_indices=draw_joint_indices)
 			#img = draw_boxes(img, frame_boxes, identities=None, offset=(0,0))
-			img = draw_trajectories(img, frame_trajectories, offset=(0,0))
+			# img = draw_trajectories(img, frame_trajectories, offset=(0,0))
 
 		img_name = img_path.split('/')[-1].split('.')[0]
 		out_path = os.path.join(temp_dir,img_name + '.jpeg')
@@ -225,13 +225,21 @@ def visualize_keypoints_boxes(img_generator, keypoints, boxes, trajectories, mp4
 
 if __name__ == '__main__':
 	#Load keypoints from .npz:
-	keypoints_npz_path = './pose2d_cut_testtt_no_interpolation_06_09.npz'
+	keypoints_npz_path = './npz_output/data_2d_custom_myvideos_10_01.npz'
+	# keypoints_npz_path = '/home/lin/workspace/3DMPPE_ROOTNET_RELEASE/demo/data_mul/data_2d_custom_myvideos_ETH_cut.npz'
+
 	keypoints,boxes,_ = load_keypoints_boxes_from_npz(keypoints_npz_path, dataset_name='detectron2')
 
 	# img_generator = read_images('./images')    # read images from a directory
 	img_generator = read_video('/home/lin/Videos/GH013110_original_cut_cut.MP4')  # or get them from a video
+	# img_generator = read_video('/home/lin/workspace/OpenTraj/datasets/ETH/seq_eth/video_cut.avi')
 
-	trajectories = pd.read_hdf("./output/_cut_cut_traj_20_09.h5")
+	# traj_output_path = '/home/lin/workspace/3DMPPE_ROOTNET_RELEASE/demo/data_mul/dummy_traj_ETH_cut'
+	traj_output_path = './npz_output/dummy_traj_10_01'
+	# trajectories = pd.read_hdf("./output/_cut_cut_traj_20_09.h5")
+	trajectories = pd.read_hdf(traj_output_path)
 	#Visualize the keypoints:
 	# visualize_keypoints(img_generator, keypoints, mp4_output_path='./GH013110_original_output_cut_cut_testtt_no_interpolation_16_08.mp4')
-	visualize_keypoints_boxes(img_generator, keypoints, boxes, trajectories, mp4_output_path='./GH013110_original_output_cut_cut_testtt_no_interpolation_20_09.mp4')
+	# mp4_output_path = '/home/lin/workspace/3DMPPE_ROOTNET_RELEASE/demo/data_mul/visual_data_2d_custom_myvideos_ETH_cut.mp4'
+	mp4_output_path = './rendered_video_output/rendered_GH013110_original_cut_cut_10_01.MP4'
+	visualize_keypoints_boxes(img_generator, keypoints, boxes, trajectories, mp4_output_path=mp4_output_path)
