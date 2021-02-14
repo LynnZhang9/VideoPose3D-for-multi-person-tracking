@@ -259,7 +259,7 @@ def list2array(data,num_keypoint=21, num_point_dimenssion=3):
 
 
 if __name__ == '__main__':
-    FILE = r"./output_pose"
+    FILE = r"./output_pose_12_02_focal_GH013110" # Todo: adjust the input 3d pose data
     with open(FILE, 'rb') as fp:
         data = pickle.load(fp)
     max_num_person = 0
@@ -284,7 +284,7 @@ if __name__ == '__main__':
 
     viz_bitrate = 3000
     azim = -70
-    viz_output = "root_pose_net_output.mp4"
+    viz_output = "root_pose_net_output_12_02_focal_GH013110.mp4" # Todo: adjust the output video name
     viz_limit = -1
     viz_downsample = 1
     viz_size = 6
