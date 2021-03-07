@@ -406,12 +406,12 @@ if __name__ == '__main__':
 	# Predict poses and save the result:
 	# img_generator = read_images('./images')    # read images from a directory
 	#img_generator = read_video('./video.mp4')  # or get them from a video
-	img_generator = read_video('/home/lin/Videos/GH013110_original_cut_cut.MP4')
+	img_generator = read_video('/home/lin/Videos/GP010170_10_cut.MP4')
 	# img_generator = read_video('/home/lin/workspace/OpenTraj/datasets/ETH/seq_eth/video_cut.avi')
 	# output_path = './pose2d_cut_testtt_no_interpolation_27_09'
-	output_path = '/home/lin/workspace/VideoPose3D-for-multi-person-tracking/Detectron_pose_predictor/npz_output/data_2d_custom_myvideos_10_01'
+	output_path = '/home/lin/workspace/VideoPose3D-for-multi-person-tracking/Detectron_pose_predictor/npz_output/data_2d_custom_myvideos_GP010170_10_cut'
 	# output_path = '/home/lin/workspace/3DMPPE_ROOTNET_RELEASE/demo/data_mul/data_2d_custom_myvideos_ETH_cut'
-	traj_output_path = '/home/lin/workspace/VideoPose3D-for-multi-person-tracking/Detectron_pose_predictor/npz_output/dummy_traj_10_01'
+	traj_output_path = '/home/lin/workspace/VideoPose3D-for-multi-person-tracking/Detectron_pose_predictor/npz_output/dummy_traj_GP010170_10_cut'
 	# traj_output_path = '/home/lin/workspace/3DMPPE_ROOTNET_RELEASE/demo/data_mul/dummy_traj_ETH_cut'
 	predict_pose(pose_predictor, img_generator, output_path, traj_output_path)
 

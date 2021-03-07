@@ -1,0 +1,15 @@
+{
+"type": "FeatureCollection",
+"name": "Luisen_Karl_UTM",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::32233" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 0, "name": "0", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 244309.536979987256927, 5338036.576739653013647 ] ] } },
+{ "type": "Feature", "properties": { "id": 1, "name": "1", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 244312.224804510420654, 5338042.006145190447569 ] ] } },
+{ "type": "Feature", "properties": { "id": 2, "name": "2", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 244318.406800913711777, 5338032.383733397349715 ] ] } },
+{ "type": "Feature", "properties": { "id": 3, "name": "3", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 244321.148381927341688, 5338037.705625953152776 ] ] } },
+{ "type": "Feature", "properties": { "id": 4, "name": "4", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 244323.997475921874866, 5338038.888268743641675 ] ] } },
+{ "type": "Feature", "properties": { "id": 5, "name": "5", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 244323.029859093541745, 5338049.908349288627505 ] ] } },
+{ "type": "Feature", "properties": { "id": 6, "name": "6", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 244320.718330003612209, 5338051.198505059815943 ] ] } },
+{ "type": "Feature", "properties": { "id": 7, "name": "7", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 244318.460557404177962, 5338052.542417321354151 ] ] } }
+]
+}

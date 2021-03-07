@@ -1,0 +1,17 @@
+{
+"type": "FeatureCollection",
+"name": "Theresien_Ludwig_UTM",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:EPSG::32233" } },
+"features": [
+{ "type": "Feature", "properties": { "id": 0, "name": "0", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 245565.207962474436499, 5338268.697265470400453 ] ] } },
+{ "type": "Feature", "properties": { "id": 1, "name": "1", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 245572.680114648857852, 5338287.512037132866681 ] ] } },
+{ "type": "Feature", "properties": { "id": 3, "name": "3", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 245573.325192534393864, 5338264.7192851761356 ] ] } },
+{ "type": "Feature", "properties": { "id": 4, "name": "4", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 245579.104015259159496, 5338281.034380030818284 ] ] } },
+{ "type": "Feature", "properties": { "id": 5, "name": "5", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 245575.932382321829209, 5338263.939816063269973 ] ] } },
+{ "type": "Feature", "properties": { "id": 6, "name": "6", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 245581.630570310953772, 5338280.389302145689726 ] ] } },
+{ "type": "Feature", "properties": { "id": 7, "name": "7", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 245591.683034027635586, 5338280.120519693940878 ] ] } },
+{ "type": "Feature", "properties": { "id": 8, "name": "8", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 245592.435624894103967, 5338282.055753350257874 ] ] } },
+{ "type": "Feature", "properties": { "id": 9, "name": "9", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 245571.148054670687998, 5338258.698558243922889 ] ] } },
+{ "type": "Feature", "properties": { "id": 10, "name": "10", "x": null, "y": null }, "geometry": { "type": "MultiPoint", "coordinates": [ [ 245573.674609722482273, 5338257.730941415764391 ] ] } }
+]
+}

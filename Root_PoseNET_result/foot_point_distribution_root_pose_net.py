@@ -11,14 +11,7 @@ import pickle
 # FILE = r"./temp_output/output_3d_keypoints.npy"
 # FILE = r"./temp_output/output_3d_after_image_coordinates.npy"
 # FILE = r"./temp_output/output_3d_after_camera_to_world.npy"
-FILE = r"./output_pose"
-with open (FILE, 'rb') as fp:
-    data = pickle.load(fp)
-max_num_person = 0
-for num_person_list in data[1]:
-    max_num_person = max(max_num_person, len(num_person_list))
 
-data = data[1]
 
 
 #Functions for plane regression
@@ -43,7 +36,7 @@ def cross(a, b):
             a[0]*b[1] - a[1]*b[0]]
 
 
-def plane_regression(points):
+def plane_regression(points, x_interval=[-10,10], y_interval=[-10,10]):
     fun = functools.partial(error, points=points)
     params0 = [0, 0, 0]
     res = scipy.optimize.minimize(fun, params0)
@@ -59,7 +52,7 @@ def plane_regression(points):
 
     d = -point.dot(normal)
     # x yy define the plane area
-    xx, yy = np.meshgrid([-30000,20000], [0,60000])
+    xx, yy = np.meshgrid(x_interval, y_interval)
     z = (-normal[0] * xx - normal[1] * yy - d) * 1. / normal[2]
     return xx, yy, z, xs, ys, zs
 
@@ -95,6 +88,14 @@ def point2area_distance(point1, point2, point3, point4):
 
 
 if __name__ == '__main__':
+    FILE = r"./output_pose_GP010170_10_cut"
+    with open(FILE, 'rb') as fp:
+        data = pickle.load(fp)
+    max_num_person = 0
+    for num_person_list in data[1]:
+        max_num_person = max(max_num_person, len(num_person_list))
+
+    data = data[1]
     # All ankle points
     ankles_exist = False
     for fr in range(len(data)):
@@ -117,8 +118,10 @@ if __name__ == '__main__':
                 ankles = np.concatenate((ankles, fr_ankles), axis=0)
 
     points = ankles[~np.isnan(ankles).any(axis=1), :]
-
-    xx, yy, zz, xs, ys, zs = plane_regression(points)
+    points = points / 1000
+    x_interval = [-30,20]
+    y_interval = [0, 60]
+    xx, yy, zz, xs, ys, zs = plane_regression(points, x_interval=x_interval, y_interval=y_interval)
     point1 = np.array([xx[0][0], yy[0][0], zz[0][0]])
     point2 = np.array([xx[0][1], yy[0][1], zz[0][1]])
     point3 = np.array([xx[1][0], yy[1][0], zz[1][0]])

@@ -16,7 +16,7 @@ import cv2
 # FILE = r"./temp_output/output_3d_keypoints.npy"
 # FILE = r"./temp_output/output_3d_after_image_coordinates.npy"
 # FILE = r"./temp_output/output_3d_after_camera_to_world.npy"
-FILE = r"./output_pose"
+FILE = r"./output_pose_GOPR0170_10_cut"
 with open (FILE, 'rb') as fp:
     data = pickle.load(fp)
 max_num_person = 0

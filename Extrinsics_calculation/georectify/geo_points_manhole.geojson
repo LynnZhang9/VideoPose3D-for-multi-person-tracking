@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"name": "geo_points_manhole",
+"features": [
+{ "type": "Feature", "properties": { }, "geometry": { "type": "Point", "coordinates": [ 4468640.767548460513353, 5333258.314731852151453 ] } },
+{ "type": "Feature", "properties": { }, "geometry": { "type": "Point", "coordinates": [ 4468641.761964405886829, 5333259.469359254464507 ] } },
+{ "type": "Feature", "properties": { }, "geometry": { "type": "Point", "coordinates": [ 4468641.143216705881059, 5333259.911321897059679 ] } },
+{ "type": "Feature", "properties": { }, "geometry": { "type": "Point", "coordinates": [ 4468640.165374360047281, 5333258.828513422980905 ] } }
+]
+}
