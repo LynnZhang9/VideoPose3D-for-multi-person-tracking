@@ -33,7 +33,7 @@ while not success:
 # Read world-point coordinates from geojson file
 with open(POINT_FILE, "r") as f:
     point_json = json.load(f)
-# world_points = [tuple(c["geometry"]["coordinates"]) for c in point_json["features"]]
+# UTM coordinate with 33N zone
 world_points = [tuple(c["geometry"]["coordinates"][0]) for c in point_json["features"]]
 image_points = []
 world_pointswith_z = [tuple(c["geometry"]["coordinates"][0])+(0,) for c in point_json["features"]]

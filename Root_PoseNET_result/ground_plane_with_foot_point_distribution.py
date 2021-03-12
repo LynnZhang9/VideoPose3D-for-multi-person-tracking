@@ -7,7 +7,7 @@ import functools
 from matplotlib import cm
 import pickle
 
-
+from mpl_toolkits.mplot3d import Axes3D
 
 #Functions for plane regression
 def plane(x, y, params):
@@ -81,10 +81,8 @@ def point2area_distance(point1, point2, point3, point4):
     mod_area = np.sqrt(np.sum(np.square([Ax, By, Cz])))
     d = abs(mod_d) / mod_area
     return d
-def get_points_on_ground_plane(data_path):
+def get_points_on_ground_plane(camera_dict):
     # data_path = r"../Extrinsics_calculation/output/GP010170.MP4_camera_data.pkl"
-    with open(data_path, "rb") as input_file:
-        camera_dict = pickle.load(input_file)
 
     image_inputs = camera_dict['image_points']
     homography = camera_dict['homography']
@@ -106,6 +104,13 @@ def get_points_on_ground_plane(data_path):
     # Get camera coordinate from UTM coordinate
     camera_coor = np.dot(rmatx[0], cal_utm) + camera_dict['extrinscis_T']
     return camera_coor
+
+def extrinsics_plausibility_check(camera_coor, camera_dict):
+    rmatx = cv2.Rodrigues(camera_dict['extrinscis_R'])
+    tvecs = camera_dict['extrinscis_T']
+    rmatx_inv = np.linalg.inv(rmatx[0])
+    utm_coor = np.dot(rmatx_inv,camera_coor - tvecs)
+    return utm_coor
 
 if __name__ == '__main__':
     FILE = r"./output_pose_GP010170_10_cut"
@@ -144,10 +149,29 @@ if __name__ == '__main__':
 
     # Get ground plane in camera space
     data_path = r"../Extrinsics_calculation/output/GP010170.MP4_camera_data.pkl"
-    camera_coor = get_points_on_ground_plane(data_path)
+    with open(data_path, "rb") as input_file:
+        camera_dict = pickle.load(input_file)
+    origin_point = np.array([[0],[0],[0]])
+    position = extrinsics_plausibility_check(origin_point, camera_dict)
+    came_vetor = np.array([[0],[0],[1]])
+    orientation = extrinsics_plausibility_check(came_vetor, camera_dict)
+    orientation = orientation - position
+    print("position in UTM\n {}, \norientation in UTM\n {} with 33N zone".format(position, orientation))
+    #Arrows of camera
+    p0 = [1., 0., 0.]
+    p1 = [0., 1., 0.]
+    p2 = [0., 0., 1.]
+
+    origin = [0, 0, 0]
+    X, Y, Z = zip(origin, origin, origin)
+    U, V, W = zip(p0, p1, p2)
+
+    camera_coor = get_points_on_ground_plane(camera_dict)
     camera_coor_x = camera_coor[0, :]
     camera_coor_y = camera_coor[2, :]
     camera_coor_z = -camera_coor[1, :]
+    # camera_coor_y = camera_coor[1, :]
+    # camera_coor_z = camera_coor[2, :]
     camera_coor_array_tuple = (camera_coor_x, camera_coor_y, camera_coor_z)
 
     camera_coor_right = np.vstack(camera_coor_array_tuple)
@@ -179,7 +203,8 @@ if __name__ == '__main__':
 
     ax.scatter(camera_coor_x, camera_coor_y, camera_coor_z)
     ax.plot_surface(camera_coor_xx, camera_coor_yy, camera_coor_zz, alpha=0.3, color=[0, 1, 0])
-
+    #camera unit vector
+    ax.quiver(X, Y, Z, U, V, W, arrow_length_ratio=0.3, length=20, normalize=True, color='g')
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
