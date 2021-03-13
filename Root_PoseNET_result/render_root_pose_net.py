@@ -1,12 +1,14 @@
 import matplotlib
 matplotlib.use('Agg')
-
+import cv2
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation, writers
 from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 import subprocess as sp
 import pickle
+import functools
+import scipy.optimize
 
 def get_resolution(filename):
     command = ['ffprobe', '-v', 'error', '-select_streams', 'v:0',
@@ -104,10 +106,6 @@ def multi_person_render_animation(keypoints, keypoints_metadata, poses, skeleton
         effective_length = min(keypoints.shape[0], len(all_frames))
         all_frames = all_frames[:effective_length]
 
-        # keypoints = keypoints[input_video_skip:]  # todo remove
-        # for mul_idx in range(len(poses)):
-        #     for idx in range(len(poses[mul_idx])):
-        #         poses[mul_idx][idx] = poses[mul_idx][idx][input_video_skip:]
 
         if fps is None:
             fps = get_fps(input_video_path)
@@ -140,17 +138,7 @@ def multi_person_render_animation(keypoints, keypoints_metadata, poses, skeleton
         nonlocal initialized, image, lines, points
 
         for n, ax in enumerate(ax_3d):
-        #     # if np.isnan(trajectories[n][i, 0]) or np.isnan(trajectories[n][i, 1]):
-        #     #     continue
-        #     min_x = 0
-        #     max_x = 0
-        #     min_y = 0
-        #     max_y = 0
-        #     for mul in range(len(trajectories[n][i])):
-        #         min_x = min(min_x, trajectories[n][i][mul, 0])
-        #         max_x = max(max_x, trajectories[n][i][mul, 0])
-        #         min_y = min(min_y, trajectories[n][i][mul, 1])
-        #         max_y = max(max_y, trajectories[n][i][mul, 1])
+
             ax.set_xlim3d([-15000,5000])
             ax.set_xlabel('X')
             ax.set_ylim3d([0,30000])
@@ -259,7 +247,7 @@ def list2array(data,num_keypoint=21, num_point_dimenssion=3):
 
 
 if __name__ == '__main__':
-    FILE = r"./output_pose_GOPR0170_10_cut" # Todo: adjust the input 3d pose data
+    FILE = r"./output_pose_GP010170_10_cut" # Todo: adjust the input 3d pose data
     with open(FILE, 'rb') as fp:
         data = pickle.load(fp)
     max_num_person = 0
@@ -269,7 +257,11 @@ if __name__ == '__main__':
     data_2d = data[0]
     data_3d = data[1]
     predicted_multi_input_keypoints = list2array(data_2d, num_point_dimenssion=2)
-    anim_output = list2array(data_3d, num_point_dimenssion=3)
+    data_3d_path = r'./Ground_truth_generation/Ground_truth_GP010170'
+    with open(data_3d_path, 'rb') as fp:
+        anim_output = pickle.load(fp)
+    # anim_output = list2array(data_3d, num_point_dimenssion=3)
+    anim_output = list2array(anim_output, num_point_dimenssion=3)
     fps = None
     keypoints_metadata = {'layout_name': 'coco', 'num_joints': 17, 'keypoints_symmetry': [[1, 3, 5, 7, 9, 11, 13, 15], [2, 4, 6, 8, 10, 12, 14, 16]], 'video_metadata': {'detectron2': {'w': 2704, 'h': 1520}}}
 
@@ -284,11 +276,11 @@ if __name__ == '__main__':
 
     viz_bitrate = 3000
     azim = -70
-    viz_output = "root_pose_net_output_GOPR0170_10_cut.mp4" # Todo: adjust the output video name
+    viz_output = "root_pose_net_output_GP010170_10_cut.mp4" # Todo: adjust the output video name
     viz_limit = -1
     viz_downsample = 1
     viz_size = 6
-    viz_video = '/home/lin/Videos/GOPR0170_10_cut.MP4'
+    viz_video = '/home/lin/Videos/GP010170_10_cut.MP4'
     viewport = (2704, 1520)
     viz_input = 0
     multi_person_render_animation(predicted_multi_input_keypoints, keypoints_metadata, anim_output,
