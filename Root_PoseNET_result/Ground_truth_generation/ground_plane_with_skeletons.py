@@ -11,11 +11,7 @@ import functools
 import pickle
 import cv2
 
-# FILE = "output_3d.npy"
-# FILE = r"./temp_output/output_3d_predictions.npy"
-# FILE = r"./temp_output/output_3d_keypoints.npy"
-# FILE = r"./temp_output/output_3d_after_image_coordinates.npy"
-# FILE = r"./temp_output/output_3d_after_camera_to_world.npy"
+
 FILE = r"../output_pose_GP010170_10_cut"
 with open (FILE, 'rb') as fp:
     data = pickle.load(fp)
@@ -200,48 +196,48 @@ def plot_at_frame(fr):
 
     return artists
 
-
-# Get ground plane in camera space
-data_path = r"../../Extrinsics_calculation/output/GP010170.MP4_camera_data.pkl"
-with open(data_path, "rb") as input_file:
-    camera_dict = pickle.load(input_file)
-
-
-x_interval = [-30, 20]
-y_interval = [0, 60]
-# xx, yy, zz = plane_regression(points, x_interval, y_interval)
-#
-# plane_3d[0] = ax.plot_surface(xx, yy, zz, alpha=0.2, color=[0, 1, 0])
-camera_coor = get_points_on_ground_plane(camera_dict)
-camera_coor_x = camera_coor[0, :]
-camera_coor_y = camera_coor[2, :]
-camera_coor_z = -camera_coor[1, :]
-# camera_coor_y = camera_coor[1, :]
-# camera_coor_z = camera_coor[2, :]
-camera_coor_array_tuple = (camera_coor_x, camera_coor_y, camera_coor_z)
-
-camera_coor_right = np.vstack(camera_coor_array_tuple)
-camera_coor_points = camera_coor_right.T
-camera_coor_xx, camera_coor_yy, camera_coor_zz = plane_regression(
-    camera_coor_points, x_interval=x_interval, y_interval=y_interval)
+if __name__ == '__main__':
+    # Get ground plane in camera space
+    data_path = r"../../Extrinsics_calculation/output/GP010170.MP4_camera_data.pkl"
+    with open(data_path, "rb") as input_file:
+        camera_dict = pickle.load(input_file)
 
 
-fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-# Convert from plt 0-1 RGBA colors to 0-255 BGR colors for opencv.
-cmap = plt.get_cmap('rainbow')
-colors = [cmap(i) for i in np.linspace(0, 1, len(skeleton) + 2)]
-colors = [np.array((c[2], c[1], c[0])) for c in colors]
-# ax.view_init(elev=15., azim=70) # initialize the view angle
+    x_interval = [-30, 20]
+    y_interval = [0, 60]
+    # xx, yy, zz = plane_regression(points, x_interval, y_interval)
+    #
+    # plane_3d[0] = ax.plot_surface(xx, yy, zz, alpha=0.2, color=[0, 1, 0])
+    camera_coor = get_points_on_ground_plane(camera_dict)
+    camera_coor_x = camera_coor[0, :]
+    camera_coor_y = camera_coor[2, :]
+    camera_coor_z = -camera_coor[1, :]
+    # camera_coor_y = camera_coor[1, :]
+    # camera_coor_z = camera_coor[2, :]
+    camera_coor_array_tuple = (camera_coor_x, camera_coor_y, camera_coor_z)
 
-ax.scatter(camera_coor_x, camera_coor_y, camera_coor_z)
-ax.plot_surface(camera_coor_xx, camera_coor_yy, camera_coor_zz, alpha=0.2, color=[0, 1, 0])
-ax.set_xlabel('X Label')
-ax.set_ylabel('Y Label')
-ax.set_zlabel('Z Label')
-# ax.set_xlim([-10, -3])
-# ax.set_ylim([-10, -3])
-# ax.set_zlim([0, 7])
+    camera_coor_right = np.vstack(camera_coor_array_tuple)
+    camera_coor_points = camera_coor_right.T
+    camera_coor_xx, camera_coor_yy, camera_coor_zz = plane_regression(
+        camera_coor_points, x_interval=x_interval, y_interval=y_interval)
 
-a = animation.FuncAnimation(fig, plot_at_frame, frames=range(len(data)), repeat=True)
-plt.show()
+
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    # Convert from plt 0-1 RGBA colors to 0-255 BGR colors for opencv.
+    cmap = plt.get_cmap('rainbow')
+    colors = [cmap(i) for i in np.linspace(0, 1, len(skeleton) + 2)]
+    colors = [np.array((c[2], c[1], c[0])) for c in colors]
+    # ax.view_init(elev=15., azim=70) # initialize the view angle
+
+    ax.scatter(camera_coor_x, camera_coor_y, camera_coor_z)
+    ax.plot_surface(camera_coor_xx, camera_coor_yy, camera_coor_zz, alpha=0.2, color=[0, 1, 0])
+    ax.set_xlabel('X Label')
+    ax.set_ylabel('Y Label')
+    ax.set_zlabel('Z Label')
+    # ax.set_xlim([-10, -3])
+    # ax.set_ylim([-10, -3])
+    # ax.set_zlim([0, 7])
+
+    a = animation.FuncAnimation(fig, plot_at_frame, frames=range(len(data)), repeat=True)
+    plt.show()

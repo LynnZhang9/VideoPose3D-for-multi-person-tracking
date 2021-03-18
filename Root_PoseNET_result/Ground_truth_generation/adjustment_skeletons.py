@@ -254,6 +254,7 @@ def plot_at_frame(fr):
 
 
 if __name__ == '__main__':
+    output_path = r'./Ground_truth_GP010170'
     FILE = r"../output_pose_GP010170_10_cut"
     with open(FILE, 'rb') as fp:
         data = pickle.load(fp)
@@ -306,9 +307,7 @@ if __name__ == '__main__':
             ori_keypoint = data_data[i][:, j, :].copy()
             data_data[i][:, j, :] = ori_keypoint/scale[i]
             print('test')
-    output_path = r'./Ground_truth_GP010170'
-    with open(output_path, 'wb') as fp:
-        pickle.dump(data_data, fp)
+
 
 
     plane_3d = []
@@ -338,3 +337,7 @@ if __name__ == '__main__':
 
     a = animation.FuncAnimation(fig, plot_at_frame, frames=range(len(data)), repeat=True)
     plt.show()
+
+
+    with open(output_path, 'wb') as fp:
+        pickle.dump(data_data, fp)
