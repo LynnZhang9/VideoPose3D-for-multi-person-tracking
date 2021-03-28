@@ -13,7 +13,9 @@ output_path = './npz_output/data_2d_custom_myvideos_GP010170'
 
 traj_output_path = './npz_output/dummy_traj_GP010170'
 
-Note: dummy_traj_GP010170 should be the output of trajectory but can not be exported, since the trajectory algorithm was not implemented sucessfully in this script. Hence, all relative codes are commented.
+Note: 
+1. dummy_traj_GP010170 should be the output of trajectory but can not be exported, since the trajectory algorithm was not implemented sucessfully in this script. Hence, all relative codes are commented.
+2. model_config and model_weights are uploaded in Teams channel named 2d_skeleton_extraction_models.zip.
 
 ## Output
 npz data: /npz_output/data_2d_custom_myvideos_GP010170
