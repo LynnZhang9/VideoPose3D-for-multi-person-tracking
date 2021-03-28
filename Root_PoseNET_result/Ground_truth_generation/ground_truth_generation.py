@@ -97,7 +97,7 @@ def isect_line_plane_v3(p0, p1, p_co, p_no, epsilon=1e-6):
         return add_v3v3(p0, u)
     else:
         # The segment is parallel to plane.
-        return None
+        return (np.nan, np.nan, np.nan)
 
 def plane_regression(points, x_interval=[-10,10], y_interval=[-10,10]):
     fun = functools.partial(error, points=points)
@@ -196,8 +196,8 @@ def cam2pixel(cam_coord, f, c):
     return img_coord
 
 if __name__ == '__main__':
-    output_path = r'./Ground_truth_GP010170_10_cut'
-    FILE = r"../output_pose_GP010170_10_cut"
+    output_path = r'./Ground_truth_GP010170'
+    FILE = r"../output_pose_GP010170"
     with open(FILE, 'rb') as fp:
         data = pickle.load(fp)
     max_num_person = 0
