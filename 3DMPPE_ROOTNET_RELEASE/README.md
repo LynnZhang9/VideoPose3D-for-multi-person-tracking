@@ -27,7 +27,7 @@ ${POSE_ROOT}
 |   |-- demo_test.py
 |   |-- data_mul
 |   |   |-- all_keyframes_root_3d_GP010170 (root points exported from demo_test.py)
-|   |   |-- data_2d_custom_myvideos_GP010170.npz (2d skeletons exportedfrom demo_test.py)
+|   |   |-- data_2d_custom_myvideos_GP010170.npz (2d skeletons exported from detectron_pose_predictor_demo_no_interpolation.py)
 
 Note: RootNet-20210103T143641Z-001.zip is uploaed in Teams channel
 
